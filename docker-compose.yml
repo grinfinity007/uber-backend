@@ -1,0 +1,19 @@
+version: '3.9'
+services:
+  auth-db:
+    image: postgres:16-alpine
+    env_file:
+      - ./auth-service/db.env
+    volumes:
+      - auth_db_data:/var/lib/postgresql/data
+      - ./auth-service/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+  
+  auth-api:
+    build: ./auth-service
+    env_file:
+      - ./auth-service/.env
+    depends_on:
+      - auth-db
+
+volumes:
+ auth_db_data:
