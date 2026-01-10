@@ -1,4 +1,3 @@
-version: '3.9'
 services:
   auth-db:
     image: postgres:16-alpine
@@ -16,6 +15,15 @@ services:
       - auth-db
     ports:
       - "3001:3001"
+
+  api-gateway-api:
+    build: ./api-gateway
+    env_file:
+      - ./api-gateway/.env
+    depends_on:
+      - auth-api
+    ports:
+      - 8000:8000
 
 volumes:
  auth_db_data:
